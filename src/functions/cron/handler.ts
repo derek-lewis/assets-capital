@@ -1,9 +1,9 @@
 import "source-map-support/register";
 import { formatJSONResponse } from "@/libs/apiGateway";
 import { middyfy } from "@/libs/lambda";
-import { aggregateHoldings, updateHolding } from "@/libs/db";
+import { aggregateHoldings, updateHolding, Holding } from "@/libs/db";
 
-const cron = async (event) => {
+const cron = async () => {
   // grab holdings, populate rates and sort by account ID then balance
   const pipeline = [
     {
@@ -33,7 +33,8 @@ const cron = async (event) => {
   // balances should be saved using pence to avoid rounding errors
   // unsafe multiplication used for proof of concept - safe precision libraries must be created to round and limit based on system prefs.
   const holding_adjustments = [];
-  for (let holding of holdings) {
+  for (const h of holdings) {
+    const holding = h as Holding
     let currect_account = null;
 
     if (currect_account != holding.account_id) {
@@ -43,7 +44,8 @@ const cron = async (event) => {
     }
 
     // apply interest
-    holding.balance += (holding.balance / 100) * holding.rates.rate; // unsafe rounding issues
+    const rate = holding.rates.rate as number
+    holding.balance += (holding.balance / 100) * rate; // unsafe rounding issues
 
     holding_adjustments.push(
       updateHolding(

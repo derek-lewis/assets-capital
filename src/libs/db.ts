@@ -23,11 +23,12 @@ const DB_SOURCE = "dev";
 axios.defaults.headers.common["api-key"] = API_KEY;
 
 // configure types
-type Holding = {
+export type Holding = {
+  _id?: string;
   account_id: string;
   investor_id: string;
   balance: number;
-  rates: Record<string, unknown>;
+  rates?: Record<string, unknown>;
 };
 
 type HoldingResponse = {
@@ -138,7 +139,7 @@ export const updateHolding = async (
         update,
       }
     );
-    console.log("updateHolding", data);
+    
     return data?.documents;
   } catch (error) {
     if (axios.isAxiosError(error)) {
