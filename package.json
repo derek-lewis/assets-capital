@@ -5,8 +5,8 @@
   "main": "serverless.ts",
   "scripts": {
     "dev": "serverless offline --httpPort=4000",
-    "deploy:staging": "serverless deploy --aws-profile personal --stage staging",
-    "deploy:production": "serverless deploy --aws-profile personal --stage production",
+    "deploy:development": "serverless deploy --aws-profile developer --stage development --region eu-west-2",
+    "deploy:production": "serverless deploy --aws-profile developer --stage production",
     "test": "jest --passWithNoTests",
     "test:watch": "jest --watch --coverage",
     "lint": "eslint '*/**/*.{js,ts}'",

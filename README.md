@@ -24,7 +24,7 @@ When you come in for interview, you will be given a pair-programming exercise (u
 |comand|description|
 |------|-----------|
 |`npm run dev`| run the serverless application locally|
-|`npm run deploy:staging`| deploy to the staging environment in AWS|
+|`npm run deploy:development`| deploy to the development environment in AWS|
 |`npm run deploy:production`| deploy to the production environment in AWS|
 |`npm run test`| run automated tests|
 |`npm run lint`| run automated linting|

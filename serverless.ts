@@ -7,13 +7,16 @@ const serverlessConfiguration: AWS = {
   service: 'assets-capital',
   frameworkVersion: '2',
   useDotenv: true,
+  package: {
+    individually: true
+  },
   custom: {
     webpack: {
       webpackConfig: './webpack.config.js',
       includeModules: true,
       packager: 'yarn',
     },
-    stages: ['staging', 'production'],
+    stages: ['development', 'production'],
     prune: {
       automatic: true,
       number: 3,
@@ -58,6 +61,7 @@ const serverlessConfiguration: AWS = {
   provider: {
     name: 'aws',
     runtime: 'nodejs14.x',
+    stage: '${opt:stage, "development"}',
     iamRoleStatements: [
       {
         Effect: 'Allow',
@@ -81,6 +85,7 @@ const serverlessConfiguration: AWS = {
     },
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
+      NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000',
     },
     lambdaHashingVersion: '20201221',
   },
