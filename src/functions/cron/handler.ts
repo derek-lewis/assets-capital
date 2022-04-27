@@ -22,7 +22,7 @@ const cron = async () => {
     },
     {
       $sort: {
-        account_id: -1,
+        investor_id: -1,
         balance: -1,
       },
     },
@@ -35,12 +35,12 @@ const cron = async () => {
   const holding_adjustments = [];
   for (const h of holdings) {
     const holding = h as Holding
-    let currect_account = null;
+    let currect_investor = null;
 
-    if (currect_account != holding.account_id) {
+    if (currect_investor != holding.investor_id) {
       // apply ppromotions - this is not production ready and would require an internal promo system
       holding.balance += (holding.balance / 100) * 0.01; // unsafe rounding issues
-      currect_account = holding.account_id;
+      currect_investor = holding.investor_id;
     }
 
     // apply interest
@@ -57,10 +57,6 @@ const cron = async () => {
 
   // historic record should be kept to provide profit and loss analytics for customer facing applications.
   await Promise.all(holding_adjustments); // apply all updates - consider batching. Must apply update analysis for erors.
-
-  return formatJSONResponse({
-    status: "success",
-  });
 };
 
 export const main = middyfy(cron);
